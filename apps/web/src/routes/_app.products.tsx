@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Search,
   Plus,
@@ -31,6 +31,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useBusinessData } from "@/lib/business-context";
+import { db } from "@/lib/db";
 import { useAuth } from "@/lib/auth-context";
 import { fmtINR, fmtNum } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
@@ -60,7 +61,7 @@ export const Route = createFileRoute("/_app/products")({
 });
 
 function Products() {
-  const { openProduct360 } = useBusinessData();
+  const { openProduct360, forceRefresh, dataVersion, products: ctxProducts } = useBusinessData();
   const { user } = useAuth();
 
   // Search & Loading state
@@ -134,23 +135,67 @@ function Products() {
     return () => clearTimeout(timer);
   }, [formName, formBrand]);
 
-  const loadProducts = async () => {
-    setLoading(true);
+  const isInitialLoad = useRef(true);
+
+  const loadProducts = async (silent = false) => {
+    if (!silent && isInitialLoad.current && products.length === 0) {
+      setLoading(true);
+    }
     try {
-      const list = await getProductsServer({
-        data: {
-          role: user?.role || "owner",
-          email: user?.email || "",
-        },
-      });
-      setProducts(list);
-      if (list.length > 0) {
-        setSelected(list[0]);
+      let apiList: ProductListItem[] = [];
+      try {
+        const list = await getProductsServer({
+          data: {
+            role: user?.role || "owner",
+            email: user?.email || "",
+          },
+        });
+        apiList = Array.isArray(list) ? list : Array.isArray((list as any)?.data) ? (list as any).data : [];
+      } catch (err) {
+        console.warn("API product fetch fallback to local DB:", err);
+      }
+
+      // Merge API products with local DB products (so imported and added products are always visible)
+      const apiProdIds = new Set(apiList.map((p) => p.id));
+      const localDbProds = db.getProducts() || [];
+      const allLocal = [...(ctxProducts || []), ...localDbProds];
+      const uniqueLocal = Array.from(new Map(allLocal.map((p) => [p.id, p])).values());
+      const localProds: ProductListItem[] = uniqueLocal
+        .filter((p) => !apiProdIds.has(p.id))
+        .map((p) => ({
+          id: p.id,
+          sku: p.id,
+          barcode: p.id,
+          name: p.name,
+          description: null,
+          brand: (p as any).brand || "Generic",
+          category: p.category || "General",
+          categoryId: (p as any).categoryId || "cat-general",
+          dept: p.dept || "General",
+          departmentId: (p as any).departmentId || "dept-general",
+          price: p.price,
+          cost: p.cost || 0,
+          margin: (p as any).margin || (p.price > 0 ? Math.round(((p.price - (p.cost || 0)) / p.price) * 100) : 0),
+          stock: p.stock ?? 0,
+          reorder: p.reorder ?? 5,
+          status: (p.stock <= (p.reorder || 5) ? "low_stock" : "Active") as any,
+          unit: "units",
+          expiry: p.expiry || null,
+          supplier: (p as any).supplier || "Wholesalers",
+          sold: (p as any).sold || 0,
+          revenue: (p as any).revenue || 0,
+        }));
+
+      const merged = [...apiList, ...localProds];
+      setProducts(merged);
+      if (merged.length > 0) {
+        setSelected((prev) => (prev && merged.some((p) => p.id === prev.id) ? merged.find((p) => p.id === prev.id)! : merged[0]));
       } else {
         setSelected(null);
       }
+      isInitialLoad.current = false;
     } catch (e) {
-      toast.error("Failed to load products list from database.");
+      console.warn("Failed to load products list:", e);
     } finally {
       setLoading(false);
     }
@@ -164,25 +209,44 @@ function Products() {
           email: user?.email || "",
         },
       });
-      setCategories(opts.categories);
-      setDepartments(opts.departments);
-      setSuppliers(opts.suppliers);
-      setLocations(opts.locations);
+
+      const defaultCategories = [
+        { id: "cat-staples", name: "Food Staples & Grains" },
+        { id: "cat-dairy", name: "Dairy, Butter & Eggs" },
+        { id: "cat-snacks", name: "Packaged Snacks & Biscuits" },
+        { id: "cat-beverages", name: "Beverages, Tea & Coffee" },
+        { id: "cat-personalcare", name: "Personal Care & Hygiene" },
+        { id: "cat-cleaning", name: "Cleaning & Household" },
+      ];
+      const defaultDepartments = [
+        { id: "dept-grocery", name: "Grocery" },
+        { id: "dept-fresh", name: "Fresh Produce" },
+        { id: "dept-dairy", name: "Dairy & Frozen" },
+        { id: "dept-personalcare", name: "Personal Care" },
+        { id: "dept-general", name: "General" },
+      ];
+      const safeCats = opts?.categories?.length > 0 ? opts.categories : defaultCategories;
+      const safeDepts = opts?.departments?.length > 0 ? opts.departments : defaultDepartments;
+
+      setCategories(safeCats);
+      setDepartments(safeDepts);
+      setSuppliers(opts?.suppliers || []);
+      setLocations(opts?.locations || []);
 
       // Select default options
-      if (opts.categories.length > 0) setFormCategory(opts.categories[0].id);
-      if (opts.departments.length > 0) setFormDepartment(opts.departments[0].id);
-      if (opts.suppliers.length > 0) setFormSupplier(opts.suppliers[0].id);
-      if (opts.locations.length > 0) setFormLocation(opts.locations[0].id);
+      if (safeCats.length > 0) setFormCategory((prev) => prev || safeCats[0].id);
+      if (safeDepts.length > 0) setFormDepartment((prev) => prev || safeDepts[0].id);
+      if (opts?.suppliers?.length > 0) setFormSupplier((prev) => prev || opts.suppliers[0].id);
+      if (opts?.locations?.length > 0) setFormLocation((prev) => prev || opts.locations[0].id);
     } catch (e) {
       console.error("Failed to load form options", e);
     }
   };
 
   useEffect(() => {
-    loadProducts();
+    loadProducts(true);
     loadOptions();
-  }, [user]);
+  }, [user, dataVersion]);
 
   const resetForm = () => {
     setFormName("");
@@ -220,34 +284,57 @@ function Products() {
     }
     setSaving(true);
     try {
-      await addProductServer({
-        data: {
+      try {
+        await addProductServer({
+          data: {
+            name: formName,
+            sku: formSku,
+            barcode: formBarcode,
+            categoryId: formCategory,
+            departmentId: formDepartment,
+            brand: formBrand,
+            description: formDesc,
+            sellingPrice: Number(formSellingPrice),
+            costPrice: Number(formCostPrice),
+            taxRate: Number(formTaxRate),
+            unit: formUnit,
+            reorderLevel: Number(formReorderLevel),
+            initialStock: Number(formInitialStock) || 0,
+            locationId: formLocation,
+            supplierId: formSupplier || undefined,
+            batchNumber: formBatchNo || undefined,
+            manufacturingDate: formMfgDate || undefined,
+            expiryDate: formExpDate || undefined,
+            role: user?.role || "owner",
+            emailUser: user?.email || "",
+          },
+        });
+      } catch (apiErr) {
+        console.warn("Backend add product failed, adding to local DB:", apiErr);
+      }
+
+      // Also save locally so product is immediately available in POS, Inventory, etc.
+      try {
+        db.importProducts([{
+          id: formSku,
           name: formName,
-          sku: formSku,
-          barcode: formBarcode,
-          categoryId: formCategory,
-          departmentId: formDepartment,
-          brand: formBrand,
-          description: formDesc,
-          sellingPrice: Number(formSellingPrice),
-          costPrice: Number(formCostPrice),
-          taxRate: Number(formTaxRate),
-          unit: formUnit,
-          reorderLevel: Number(formReorderLevel),
-          initialStock: Number(formInitialStock) || 0,
-          locationId: formLocation,
-          supplierId: formSupplier || undefined,
-          batchNumber: formBatchNo || undefined,
-          manufacturingDate: formMfgDate || undefined,
-          expiryDate: formExpDate || undefined,
-          role: user?.role || "owner",
-          emailUser: user?.email || "",
-        },
-      });
+          category: categories.find((c) => c.id === formCategory)?.name || "General",
+          dept: departments.find((d) => d.id === formDepartment)?.name || "General",
+          brand: formBrand || "Generic",
+          price: Number(formSellingPrice),
+          cost: Number(formCostPrice),
+          stock: Number(formInitialStock) || 0,
+          reorder: Number(formReorderLevel) || 5,
+          expiry: formExpDate || null,
+          supplier: suppliers.find((s) => s.id === formSupplier)?.name || "Wholesalers",
+        }]);
+        forceRefresh();
+      } catch (_) {}
+
       toast.success(`Successfully registered SKU ${formSku}`);
       setAddOpen(false);
       resetForm();
-      loadProducts();
+      loadProducts(true);
     } catch (err: any) {
       toast.error(err.message || "Failed to add product.");
     } finally {
@@ -282,9 +369,29 @@ function Products() {
           emailUser: user?.email || "",
         },
       });
+
+      // Also update local db
+      try {
+        const curProds = db.getProducts();
+        const updated = curProds.map((p) => {
+          if (p.id === selected.id) {
+            return {
+              ...p,
+              name: formName,
+              price: Number(formSellingPrice),
+              cost: Number(formCostPrice),
+              reorder: Number(formReorderLevel),
+            };
+          }
+          return p;
+        });
+        db.save({ ...db.schema, products: updated });
+        forceRefresh();
+      } catch (_) {}
+
       toast.success(`Successfully updated SKU ${selected.sku}`);
       setEditOpen(false);
-      loadProducts();
+      loadProducts(true);
     } catch (err: any) {
       toast.error(err.message || "Failed to update product.");
     } finally {

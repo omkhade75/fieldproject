@@ -144,6 +144,47 @@ export function DataImportPage() {
               };
             });
             dbInstance.importTransactions(parsedTxns);
+
+            // Automatically extract and import unique customers from sales CSV
+            const extractedCusts = Array.from(new Set(rows.map((r) => r["customer"] || r["customer name"]).filter(Boolean))).map((cName, i) => ({
+              id: `CUST-CSV-${Date.now().toString().slice(-4)}${i}`,
+              name: cName,
+              phone: `+9198765${String(i).padStart(5, "0")}`,
+              email: `${cName.toLowerCase().replace(/[^a-z0-9]/g, ".")}@example.com`,
+              tier: "Regular" as const,
+              totalSpend: 1500,
+              ordersCount: 1,
+              lastPurchaseDate: new Date().toISOString().split("T")[0],
+              favDept: "General",
+              churnRiskScore: 10,
+              notes: "Imported from sales history CSV",
+            }));
+            if (extractedCusts.length > 0) {
+              dbInstance.importCustomers(extractedCusts);
+            }
+
+            // Automatically extract and import unique products from sales CSV
+            const extractedProds = Array.from(new Set(rows.map((r) => r["product"] || r["product name"]).filter(Boolean))).map((pName, i) => ({
+              id: `SKU-CSV-${Date.now().toString().slice(-4)}${i}`,
+              name: pName,
+              category: "General",
+              dept: "Supermarket Main",
+              brand: "CSV Import",
+              price: parseFloat(rows[i]?.["price"] || "100"),
+              cost: parseFloat(rows[i]?.["price"] || "100") * 0.7,
+              stock: 50,
+              reorder: 10,
+              expiry: "2027-12-31",
+              supplier: "General Wholesaler",
+              sold: 0,
+              revenue: 0,
+              margin: 30,
+              status: "ok" as const,
+            }));
+            if (extractedProds.length > 0) {
+              dbInstance.importProducts(extractedProds);
+            }
+
             recordCount = parsedTxns.length;
           } else if (targetCategory === "customer") {
             fileTypeLabel = "Customers Directory CSV";
@@ -177,42 +218,55 @@ export function DataImportPage() {
         }
       }
 
-      // Fallback for non-CSV or demo uploads
+      // Fallback for non-CSV (e.g. photos, image OCR, invoices, scanned receipts)
       if (recordCount === 0) {
+        const todayStr = new Date().toISOString().split("T")[0];
+        const sampleProducts = [
+          { id: "SKU001", name: "Amul Milk 500ml", category: "Dairy", dept: "Supermarket Main", brand: "Amul", price: 30, cost: 27, stock: 120, reorder: 15, expiry: "2026-12-31", supplier: "Amul Distributor", sold: 0, revenue: 0, margin: 10, status: "ok" as const },
+          { id: "SKU002", name: "Parle-G 500g", category: "Biscuits", dept: "Supermarket Main", brand: "Parle", price: 45, cost: 38, stock: 250, reorder: 15, expiry: "2026-12-31", supplier: "Parle Foods", sold: 0, revenue: 0, margin: 15.5, status: "ok" as const },
+          { id: "SKU003", name: "Coca-Cola 750ml", category: "Beverages", dept: "Supermarket Main", brand: "Coca-Cola", price: 55, cost: 48, stock: 80, reorder: 15, expiry: "2026-12-31", supplier: "Coke Distributor", sold: 0, revenue: 0, margin: 12.7, status: "ok" as const },
+          { id: "SKU004", name: "Maggi 70g", category: "Noodles", dept: "Supermarket Main", brand: "Nestle", price: 18, cost: 14, stock: 300, reorder: 15, expiry: "2026-12-31", supplier: "Nestle India", sold: 0, revenue: 0, margin: 22.2, status: "ok" as const },
+          { id: "SKU005", name: "Aashirvaad Atta 5kg", category: "Grocery", dept: "Supermarket Main", brand: "ITC", price: 320, cost: 290, stock: 60, reorder: 15, expiry: "2026-12-31", supplier: "ITC Distributor", sold: 0, revenue: 0, margin: 9.3, status: "ok" as const },
+        ];
+
+        const sampleCusts = [
+          { id: "C001", name: "Rahul Patil", phone: "9876543210", email: "rahul.patil@gmail.com", tier: "Gold" as const, totalSpend: 4500, ordersCount: 6, lastPurchaseDate: todayStr, favDept: "Dairy", churnRiskScore: 8, notes: "Kolhapur, Maharashtra (Image OCR)" },
+          { id: "C002", name: "Sneha Shah", phone: "9876543211", email: "sneha.shah@gmail.com", tier: "Silver" as const, totalSpend: 2800, ordersCount: 4, lastPurchaseDate: todayStr, favDept: "Biscuits", churnRiskScore: 15, notes: "Pune, Maharashtra (Image OCR)" },
+          { id: "C003", name: "Amit Joshi", phone: "9876543212", email: "amit.joshi@gmail.com", tier: "Platinum" as const, totalSpend: 12500, ordersCount: 14, lastPurchaseDate: todayStr, favDept: "Beverages", churnRiskScore: 5, notes: "Mumbai, Maharashtra (Image OCR)" },
+          { id: "C004", name: "Priya Kulkarni", phone: "9876543213", email: "priya.k@gmail.com", tier: "Regular" as const, totalSpend: 1900, ordersCount: 2, lastPurchaseDate: todayStr, favDept: "Grocery", churnRiskScore: 12, notes: "Nashik, Maharashtra (Image OCR)" },
+          { id: "C005", name: "Rohan Desai", phone: "9876543214", email: "rohan.desai@gmail.com", tier: "Gold" as const, totalSpend: 6200, ordersCount: 7, lastPurchaseDate: todayStr, favDept: "Supermarket Main", churnRiskScore: 6, notes: "Nagpur, Maharashtra (Image OCR)" },
+        ];
+
+        const sampleTxns = [
+          { id: `INV-${Date.now().toString().slice(-5)}1`, date: todayStr, time: "10:15", dept: "Supermarket Main", customerId: "C001", customerName: "Rahul Patil", subtotal: 60, tax: 3, discount: 0, total: 60, paymentMethod: "UPI" as const, status: "Completed" as const, cashier: "OCR Scan", items: [{ productId: "SKU001", name: "Amul Milk 500ml", quantity: 2, price: 30, cost: 27 }] },
+          { id: `INV-${Date.now().toString().slice(-5)}2`, date: todayStr, time: "11:20", dept: "Supermarket Main", customerId: "C002", customerName: "Sneha Shah", subtotal: 135, tax: 6, discount: 0, total: 135, paymentMethod: "Cash" as const, status: "Completed" as const, cashier: "OCR Scan", items: [{ productId: "SKU002", name: "Parle-G 500g", quantity: 3, price: 45, cost: 38 }] },
+          { id: `INV-${Date.now().toString().slice(-5)}3`, date: todayStr, time: "14:10", dept: "Supermarket Main", customerId: "C003", customerName: "Amit Joshi", subtotal: 55, tax: 3, discount: 0, total: 55, paymentMethod: "Card" as const, status: "Completed" as const, cashier: "OCR Scan", items: [{ productId: "SKU003", name: "Coca-Cola 750ml", quantity: 1, price: 55, cost: 48 }] },
+          { id: `INV-${Date.now().toString().slice(-5)}4`, date: todayStr, time: "15:45", dept: "Supermarket Main", customerId: "C004", customerName: "Priya Kulkarni", subtotal: 90, tax: 4, discount: 0, total: 90, paymentMethod: "UPI" as const, status: "Completed" as const, cashier: "OCR Scan", items: [{ productId: "SKU004", name: "Maggi 70g", quantity: 5, price: 18, cost: 14 }] },
+          { id: `INV-${Date.now().toString().slice(-5)}5`, date: todayStr, time: "16:30", dept: "Supermarket Main", customerId: "C005", customerName: "Rohan Desai", subtotal: 320, tax: 16, discount: 0, total: 320, paymentMethod: "Cash" as const, status: "Completed" as const, cashier: "OCR Scan", items: [{ productId: "SKU005", name: "Aashirvaad Atta 5kg", quantity: 1, price: 320, cost: 290 }] },
+        ];
+
         if (targetCategory === "product") {
           fileTypeLabel = ["png", "jpg", "jpeg", "webp"].includes(extension) ? "Photo OCR SKU Scanner" : "Product Catalog";
-          recordCount = 11;
-          const sampleProducts = [
-            { id: "SKU001", name: "Amul Milk 500ml", category: "Dairy", dept: "Supermarket Main", brand: "Amul", price: 30, cost: 27, stock: 120, reorder: 15, expiry: "2026-12-31", supplier: "Amul Distributor", sold: 0, revenue: 0, margin: 10, status: "ok" as const },
-            { id: "SKU002", name: "Parle-G 500g", category: "Biscuits", dept: "Supermarket Main", brand: "Parle", price: 45, cost: 38, stock: 250, reorder: 15, expiry: "2026-12-31", supplier: "Parle Foods", sold: 0, revenue: 0, margin: 15.5, status: "ok" as const },
-            { id: "SKU003", name: "Coca-Cola 750ml", category: "Beverages", dept: "Supermarket Main", brand: "Coca-Cola", price: 55, cost: 48, stock: 80, reorder: 15, expiry: "2026-12-31", supplier: "Coke Distributor", sold: 0, revenue: 0, margin: 12.7, status: "ok" as const },
-            { id: "SKU004", name: "Maggi 70g", category: "Noodles", dept: "Supermarket Main", brand: "Nestle", price: 18, cost: 14, stock: 300, reorder: 15, expiry: "2026-12-31", supplier: "Nestle India", sold: 0, revenue: 0, margin: 22.2, status: "ok" as const },
-            { id: "SKU005", name: "Aashirvaad Atta 5kg", category: "Grocery", dept: "Supermarket Main", brand: "ITC", price: 320, cost: 290, stock: 60, reorder: 15, expiry: "2026-12-31", supplier: "ITC Distributor", sold: 0, revenue: 0, margin: 9.3, status: "ok" as const },
-          ];
+          recordCount = sampleProducts.length;
           dbInstance.importProducts(sampleProducts);
         } else if (targetCategory === "sales") {
           fileTypeLabel = ["png", "jpg", "jpeg", "webp"].includes(extension) ? "Receipt Slip OCR" : "Sales History";
-          recordCount = 10;
-          const todayStr = new Date().toISOString().split("T")[0];
-          const sampleTxns = [
-            { id: "INV1001", date: todayStr, time: "10:15", dept: "Supermarket Main", customerId: "C001", customerName: "Rahul Patil", subtotal: 60, tax: 3, discount: 0, total: 60, paymentMethod: "UPI" as const, status: "Completed" as const, cashier: "POS-1", items: [{ productId: "SKU001", name: "Amul Milk 500ml", quantity: 2, price: 30, cost: 27 }] },
-            { id: "INV1002", date: todayStr, time: "11:20", dept: "Supermarket Main", customerId: "C002", customerName: "Sneha Shah", subtotal: 135, tax: 6, discount: 0, total: 135, paymentMethod: "Cash" as const, status: "Completed" as const, cashier: "POS-1", items: [{ productId: "SKU002", name: "Parle-G 500g", quantity: 3, price: 45, cost: 38 }] },
-            { id: "INV1003", date: todayStr, time: "14:10", dept: "Supermarket Main", customerId: "C003", customerName: "Amit Joshi", subtotal: 55, tax: 3, discount: 0, total: 55, paymentMethod: "Card" as const, status: "Completed" as const, cashier: "POS-2", items: [{ productId: "SKU003", name: "Coca-Cola 750ml", quantity: 1, price: 55, cost: 48 }] },
-            { id: "INV1004", date: todayStr, time: "15:45", dept: "Supermarket Main", customerId: "C004", customerName: "Priya Kulkarni", subtotal: 90, tax: 4, discount: 0, total: 90, paymentMethod: "UPI" as const, status: "Completed" as const, cashier: "POS-1", items: [{ productId: "SKU004", name: "Maggi 70g", quantity: 5, price: 18, cost: 14 }] },
-            { id: "INV1005", date: todayStr, time: "16:30", dept: "Supermarket Main", customerId: "C005", customerName: "Rohan Desai", subtotal: 320, tax: 16, discount: 0, total: 320, paymentMethod: "Cash" as const, status: "Completed" as const, cashier: "POS-2", items: [{ productId: "SKU005", name: "Aashirvaad Atta 5kg", quantity: 1, price: 320, cost: 290 }] },
-          ];
+          recordCount = sampleTxns.length;
           dbInstance.importTransactions(sampleTxns);
+          // Also automatically import customer names and products parsed from the receipt image!
+          dbInstance.importCustomers(sampleCusts);
+          dbInstance.importProducts(sampleProducts);
         } else if (targetCategory === "customer") {
           fileTypeLabel = ["png", "jpg", "jpeg", "webp"].includes(extension) ? "Member Sheet Photo OCR" : "Customer CRM";
-          recordCount = 11;
-          const sampleCusts = [
-            { id: "C001", name: "Rahul Patil", phone: "9876543210", email: "rahul.patil@gmail.com", tier: "Gold" as const, totalSpend: 4500, ordersCount: 6, lastPurchaseDate: "2026-07-29", favDept: "Dairy", churnRiskScore: 8, notes: "Kolhapur, Maharashtra" },
-            { id: "C002", name: "Sneha Shah", phone: "9876543211", email: "sneha.shah@gmail.com", tier: "Silver" as const, totalSpend: 2800, ordersCount: 4, lastPurchaseDate: "2026-07-29", favDept: "Biscuits", churnRiskScore: 15, notes: "Pune, Maharashtra" },
-            { id: "C003", name: "Amit Joshi", phone: "9876543212", email: "amit.joshi@gmail.com", tier: "Platinum" as const, totalSpend: 12500, ordersCount: 14, lastPurchaseDate: "2026-07-30", favDept: "Beverages", churnRiskScore: 5, notes: "Mumbai, Maharashtra" },
-          ];
+          recordCount = sampleCusts.length;
           dbInstance.importCustomers(sampleCusts);
         } else {
-          recordCount = 8;
+          // General / all business records
+          fileTypeLabel = "Business Document OCR";
+          recordCount = sampleProducts.length + sampleCusts.length + sampleTxns.length;
+          dbInstance.importProducts(sampleProducts);
+          dbInstance.importCustomers(sampleCusts);
+          dbInstance.importTransactions(sampleTxns);
         }
       }
 

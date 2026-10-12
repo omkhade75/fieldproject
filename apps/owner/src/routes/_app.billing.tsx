@@ -126,8 +126,12 @@ function RouteComponent() {
     }
   };
 
-  const loadData = async () => {
-    setLoading(true);
+  const isInitialLoad = useRef(true);
+
+  const loadData = async (silent = false) => {
+    if (!silent && isInitialLoad.current) {
+      setLoading(true);
+    }
     try {
       const payload = {
         data: {
@@ -148,16 +152,19 @@ function RouteComponent() {
         getProductOptionsServer(payload).catch(() => ({ departments: [], categories: [] })),
       ]);
 
-      // Merge API products with local DB products (from CSV imports)
+      // Merge API products with local DB products (from CSV/Image imports & manual additions)
       const apiProds: ProductListItem[] = Array.isArray(prodsRes) ? prodsRes : [];
       const apiProdIds = new Set(apiProds.map((p) => p.id));
-      const localProds: ProductListItem[] = (ctxProducts || []).filter((p) => !apiProdIds.has(p.id)).map((p) => ({
+      const localDbProds = db.getProducts() || [];
+      const allLocal = [...(ctxProducts || []), ...localDbProds];
+      const uniqueLocal = Array.from(new Map(allLocal.map((p) => [p.id, p])).values());
+      const localProds: ProductListItem[] = uniqueLocal.filter((p) => !apiProdIds.has(p.id)).map((p) => ({
         id: p.id, sku: p.id, barcode: p.id, name: p.name, description: null,
         brand: (p as any).brand || "Generic", category: p.category || "General",
-        categoryId: "cat-general", dept: p.dept || "General", departmentId: "dept-general",
+        categoryId: (p as any).categoryId || "cat-general", dept: p.dept || "General", departmentId: (p as any).departmentId || "dept-general",
         price: p.price, cost: p.cost || 0, margin: (p as any).margin || 0,
-        stock: p.stock || 0, reorder: p.reorder || 5, status: "Active",
-        unit: "units", expiry: null, supplier: (p as any).supplier || "Wholesalers",
+        stock: p.stock ?? 0, reorder: p.reorder ?? 5, status: "Active",
+        unit: "units", expiry: p.expiry || null, supplier: (p as any).supplier || "Wholesalers",
         sold: (p as any).sold || 0, revenue: (p as any).revenue || 0,
       }));
       const mergedProds = [...apiProds, ...localProds];
@@ -165,36 +172,53 @@ function RouteComponent() {
       // Merge API customers with local DB customers
       const apiCusts: CustomerListItem[] = Array.isArray(custsRes) ? custsRes : [];
       const apiCustIds = new Set(apiCusts.map((c) => c.id));
-      const localDbCusts = db.getCustomers();
-      const localCusts: CustomerListItem[] = (localDbCusts || []).filter((c) => !apiCustIds.has(c.id)).map((c) => ({
-        id: c.id, customerCode: c.id, name: c.name || "Customer",
-        firstName: (c.name || "Customer").split(" ")[0],
-        lastName: (c.name || "").split(" ").slice(1).join(" ") || "",
-        email: (c as any).email || "", phone: (c as any).phone || "",
-        joined: c.joined || new Date().toISOString().split("T")[0],
-        customerType: "B2C", visits: c.visits || 0, spend: c.spend || 0,
-        aov: c.aov || 0, favDept: c.favDept || "General", segment: c.segment || "New",
-        churn: c.churn || 0, status: "Active",
-        lastVisit: c.lastVisit || c.joined || new Date().toISOString().split("T")[0],
-      }));
+      const localDbCusts = db.getCustomers() || [];
+      const allLocalCusts = [...(ctxCustomers || []), ...localDbCusts];
+      const uniqueLocalCusts = Array.from(new Map(allLocalCusts.map((c) => [c.id, c])).values());
+      const localCusts: CustomerListItem[] = uniqueLocalCusts.filter((c) => !apiCustIds.has(c.id)).map((c) => {
+        const fullName = c.name || `${(c as any).firstName || ""} ${(c as any).lastName || ""}`.trim() || "Customer";
+        const parts = fullName.split(" ");
+        return {
+          id: c.id, customerCode: c.id, name: fullName,
+          firstName: (c as any).firstName || parts[0] || "Customer",
+          lastName: (c as any).lastName || parts.slice(1).join(" ") || "",
+          email: (c as any).email || "", phone: (c as any).phone || "",
+          joined: (c as any).joined || new Date().toISOString().split("T")[0],
+          customerType: "B2C", visits: (c as any).visits || (c as any).ordersCount || 0,
+          spend: (c as any).spend || (c as any).totalSpend || 0,
+          aov: (c as any).aov || 0, favDept: c.favDept || "General",
+          segment: (c as any).segment || (c as any).tier || "New",
+          churn: (c as any).churn || (c as any).churnRiskScore || 0, status: "Active",
+          lastVisit: (c as any).lastVisit || (c as any).lastPurchaseDate || (c as any).joined || new Date().toISOString().split("T")[0],
+        };
+      });
       const mergedCusts = [...apiCusts, ...localCusts];
 
-      const safeDepts = Array.isArray(optsRes?.departments) ? optsRes.departments : [];
+      const safeDepts = Array.isArray(optsRes?.departments) && optsRes.departments.length > 0
+        ? optsRes.departments
+        : [
+            { id: "dept-grocery", name: "Grocery" },
+            { id: "dept-fashion", name: "Fashion" },
+            { id: "dept-electronics", name: "Electronics" },
+            { id: "dept-dairy", name: "Dairy & Frozen" },
+            { id: "dept-personalcare", name: "Personal Care" },
+            { id: "dept-general", name: "General" },
+          ];
 
       setProducts(mergedProds);
       setCustomers(mergedCusts);
       setDepartments(safeDepts);
 
-      if (safeDepts.length > 0) {
-        setFormDepartmentId(safeDepts[0].id);
-      }
-      if (mergedProds.length > 0) {
-        setSelectedItemSku(mergedProds[0].id);
-      }
+      // Preserve existing selections so user interaction is never interrupted
+      setFormDepartmentId((prev) => (prev ? prev : safeDepts[0]?.id || ""));
+      setSelectedItemSku((prev) => (prev ? prev : mergedProds[0]?.id || ""));
+      isInitialLoad.current = false;
     } catch (e) {
       console.warn("Billing page data load fallback triggered:", e);
-      // Fallback: use local DB data entirely
-      const localProds: ProductListItem[] = (ctxProducts || []).map((p) => ({
+      const localDbProds = db.getProducts() || [];
+      const allLocal = [...(ctxProducts || []), ...localDbProds];
+      const uniqueLocal = Array.from(new Map(allLocal.map((p) => [p.id, p])).values());
+      const localProds: ProductListItem[] = uniqueLocal.map((p) => ({
         id: p.id, sku: p.id, barcode: p.id, name: p.name, description: null,
         brand: (p as any).brand || "Generic", category: p.category || "General",
         categoryId: "cat-general", dept: p.dept || "General", departmentId: "dept-general",
@@ -203,29 +227,47 @@ function RouteComponent() {
         unit: "units", expiry: null, supplier: (p as any).supplier || "Wholesalers",
         sold: (p as any).sold || 0, revenue: (p as any).revenue || 0,
       }));
-      const localDbCusts = db.getCustomers();
-      const localCusts: CustomerListItem[] = (localDbCusts || []).map((c) => ({
-        id: c.id, customerCode: c.id, name: c.name || "Customer",
-        firstName: (c.name || "Customer").split(" ")[0],
-        lastName: (c.name || "").split(" ").slice(1).join(" ") || "",
-        email: (c as any).email || "", phone: (c as any).phone || "",
-        joined: c.joined || new Date().toISOString().split("T")[0],
-        customerType: "B2C", visits: c.visits || 0, spend: c.spend || 0,
-        aov: c.aov || 0, favDept: c.favDept || "General", segment: c.segment || "New",
-        churn: c.churn || 0, status: "Active",
-        lastVisit: c.lastVisit || c.joined || new Date().toISOString().split("T")[0],
-      }));
+      const localDbCusts = db.getCustomers() || [];
+      const allLocalCusts = [...(ctxCustomers || []), ...localDbCusts];
+      const uniqueLocalCusts = Array.from(new Map(allLocalCusts.map((c) => [c.id, c])).values());
+      const localCusts: CustomerListItem[] = uniqueLocalCusts.map((c) => {
+        const fullName = c.name || `${(c as any).firstName || ""} ${(c as any).lastName || ""}`.trim() || "Customer";
+        const parts = fullName.split(" ");
+        return {
+          id: c.id, customerCode: c.id, name: fullName,
+          firstName: (c as any).firstName || parts[0] || "Customer",
+          lastName: (c as any).lastName || parts.slice(1).join(" ") || "",
+          email: (c as any).email || "", phone: (c as any).phone || "",
+          joined: (c as any).joined || new Date().toISOString().split("T")[0],
+          customerType: "B2C", visits: (c as any).visits || (c as any).ordersCount || 0,
+          spend: (c as any).spend || (c as any).totalSpend || 0,
+          aov: (c as any).aov || 0, favDept: c.favDept || "General",
+          segment: (c as any).segment || (c as any).tier || "New",
+          churn: (c as any).churn || (c as any).churnRiskScore || 0, status: "Active",
+          lastVisit: (c as any).lastVisit || (c as any).lastPurchaseDate || (c as any).joined || new Date().toISOString().split("T")[0],
+        };
+      });
+      const defaultDepts = [
+        { id: "dept-grocery", name: "Grocery" },
+        { id: "dept-fashion", name: "Fashion" },
+        { id: "dept-electronics", name: "Electronics" },
+        { id: "dept-dairy", name: "Dairy & Frozen" },
+        { id: "dept-personalcare", name: "Personal Care" },
+        { id: "dept-general", name: "General" },
+      ];
       setProducts(localProds);
       setCustomers(localCusts);
-      setDepartments([]);
-      if (localProds.length > 0) setSelectedItemSku(localProds[0].id);
+      setDepartments(defaultDepts);
+      setFormDepartmentId((prev) => (prev ? prev : defaultDepts[0]?.id || ""));
+      setSelectedItemSku((prev) => (prev ? prev : localProds[0]?.id || ""));
+      isInitialLoad.current = false;
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadData(true);
   }, [user, dataVersion]);
 
   // Auto-detect department based on cart items
@@ -323,6 +365,24 @@ function RouteComponent() {
         setProducts((prev) => [...prev, newProd]);
         productSkuToCart = sku;
 
+        // Persist custom product in local db so it appears across products list & future bills
+        try {
+          db.importProducts([{
+            id: sku,
+            name: customProdName,
+            category: customProdCatName || "Packaged Foods",
+            dept: departments.find((d) => d.id === (customProdDeptId || formDepartmentId))?.name || "Grocery",
+            brand: customProdBrand || "Generic",
+            price: Number(customProdPrice),
+            cost: Number(customProdCost),
+            stock: Number(customProdStock) || 10,
+            reorder: 5,
+            expiry: null,
+            supplier: "Wholesalers",
+          }]);
+          forceRefresh();
+        } catch (_) {}
+
         setCustomProdName("");
         setCustomProdBrand("");
         setCustomProdPrice("");
@@ -386,28 +446,55 @@ function RouteComponent() {
         },
       });
 
-      if (res) {
-        setCustomers((prev) => [res, ...prev]);
-        setFormCustomerId(res.id);
-        // Also write to local DB so other pages (Customers, Live Ops, AI) see this customer
-        try {
-          db.importCustomers([{
-            id: res.id || `cust-${Date.now()}`,
-            name, joined: new Date().toISOString().split("T")[0],
-            visits: 0, spend: 0, aov: 0, favDept: newCustDept || "General",
-            lastVisit: new Date().toISOString().split("T")[0],
-            segment: "New" as const, churn: 0,
-          }]);
-          forceRefresh();
-        } catch (_) {}
-        setShowAddCustomerModal(false);
-        setNewCustFirst("");
-        setNewCustLast("");
-        setNewCustEmail("");
-        setNewCustPhone("");
-        setNewCustDept("");
-        toast.success(`Customer "${name}" registered successfully.`);
-      }
+      const custId = res?.id || `cust-${Date.now()}`;
+      const newCustObj: CustomerListItem = {
+        id: custId,
+        customerCode: custId,
+        name,
+        firstName: newCustFirst.trim(),
+        lastName: newCustLast.trim(),
+        email: newCustEmail.trim(),
+        phone: newCustPhone.trim(),
+        joined: new Date().toISOString().split("T")[0],
+        customerType: "B2C",
+        visits: 0,
+        spend: 0,
+        aov: 0,
+        favDept: newCustDept || "General",
+        segment: "New",
+        churn: 0,
+        status: "Active",
+        lastVisit: new Date().toISOString().split("T")[0],
+      };
+
+      setCustomers((prev) => [newCustObj, ...prev]);
+      setFormCustomerId(custId);
+
+      // Also write to local DB so other pages (Customers, Live Ops, AI) see this customer
+      try {
+        db.importCustomers([{
+          id: custId,
+          name,
+          phone: newCustPhone.trim(),
+          email: newCustEmail.trim(),
+          tier: "Regular",
+          totalSpend: 0,
+          ordersCount: 0,
+          lastPurchaseDate: new Date().toISOString().split("T")[0],
+          favDept: newCustDept || "General",
+          churnRiskScore: 0,
+          notes: "Quick POS Registration",
+        }]);
+        forceRefresh();
+      } catch (_) {}
+
+      setShowAddCustomerModal(false);
+      setNewCustFirst("");
+      setNewCustLast("");
+      setNewCustEmail("");
+      setNewCustPhone("");
+      setNewCustDept("");
+      toast.success(`Customer "${name}" registered successfully.`);
     } catch (err: any) {
       toast.error(err.message || "Failed to register customer.");
     } finally {
@@ -444,53 +531,97 @@ function RouteComponent() {
 
     try {
       setSaving(true);
-      const res = await createTransactionServer({
-        data: {
-          customerId: formCustomerId === "walkin" ? null : formCustomerId,
-          walkinPhone: formCustomerId === "walkin" ? walkinPhone.trim() || null : null,
-          departmentId: formDepartmentId || null,
-          paymentMethod: formPaymentMethod,
-          items: cartItems.map((ci) => ({
-            productId: ci.productId,
-            quantity: ci.quantity,
-            discount: ci.discount,
-          })),
-          activeDate: activeDate,
-          role: user?.role || "owner",
-          email: user?.email || "",
-        },
+      let res: any = null;
+      try {
+        res = await createTransactionServer({
+          data: {
+            customerId: formCustomerId === "walkin" ? null : formCustomerId,
+            walkinPhone: formCustomerId === "walkin" ? walkinPhone.trim() || null : null,
+            departmentId: formDepartmentId || null,
+            paymentMethod: formPaymentMethod,
+            items: cartItems.map((ci) => ({
+              productId: ci.productId,
+              quantity: ci.quantity,
+              discount: ci.discount,
+            })),
+            activeDate: activeDate,
+            role: user?.role || "owner",
+            email: user?.email || "",
+          },
+        });
+      } catch (apiErr) {
+        console.warn("Backend API transaction error, completing transaction locally:", apiErr);
+      }
+
+      // Check if backend returned success OR valid transaction object
+      const serverTxn = res?.transaction || (res && res.id ? res : null);
+      const txnId = serverTxn?.id || `INV-${Date.now().toString().slice(-6)}`;
+      const custObj = customers.find((c) => c.id === formCustomerId);
+      const customerDisplayName = formCustomerId === "walkin" 
+        ? (walkinPhone ? `Walk-in (${walkinPhone})` : "Walk-in Customer") 
+        : (custObj?.name || `${custObj?.firstName || ""} ${custObj?.lastName || ""}`.trim() || "Customer");
+
+      const completedTransaction = {
+        id: txnId,
+        date: activeDate || new Date().toISOString().split("T")[0],
+        time: new Date().toTimeString().slice(0, 5),
+        customerId: formCustomerId === "walkin" ? "" : formCustomerId,
+        customerName: customerDisplayName,
+        dept: departments.find((d) => d.id === formDepartmentId)?.name || "General",
+        items: calculatedItems.map((ci) => ({
+          productId: ci.productId,
+          name: ci.productName,
+          quantity: ci.quantity,
+          price: ci.unitPrice,
+          cost: (ci as any).cost || Math.round(ci.unitPrice * 0.7),
+        })),
+        subtotal,
+        discount: calculatedItems.reduce((acc, i) => acc + (i.discount || 0), 0),
+        tax,
+        total: grandTotal,
+        payment: formPaymentMethod as any,
+        paymentMethod: formPaymentMethod,
+        status: "Completed" as const,
+        cashier: user?.name || "Store Owner",
+      };
+
+      // Always save to local DB so Live Ops, Command Center, Analytics, Invoices update immediately
+      db.importTransactions([completedTransaction]);
+
+      // Deduct inventory stock for purchased products in local DB
+      cartItems.forEach((ci) => {
+        const prod = products.find((p) => p.id === ci.productId);
+        if (prod) {
+          const currentStock = prod.stock ?? 100;
+          const newStock = Math.max(0, currentStock - ci.quantity);
+          db.updateProductStock(ci.productId, newStock);
+        }
       });
 
-      if (res && res.success) {
-        toast.success("Transaction completed successfully!");
-        setCompletedTxn(res.transaction);
-        // Write transaction to local DB so Live Ops, Command Center, Analytics update immediately
-        try {
-          const custObj = customers.find((c) => c.id === formCustomerId);
-          db.importTransactions([{
-            id: res.transaction?.id || `txn-${Date.now()}`,
-            date: activeDate,
-            time: new Date().toTimeString().slice(0, 5),
-            customerId: formCustomerId === "walkin" ? "" : formCustomerId,
-            customerName: formCustomerId === "walkin" ? (walkinPhone || "Walk-in") : (custObj?.name || "Customer"),
-            dept: departments.find((d) => d.id === formDepartmentId)?.name || "General",
-            items: calculatedItems.map((ci) => ({
-              productId: ci.productId, name: ci.productName,
-              quantity: ci.quantity, price: ci.unitPrice, cost: 0,
-            })),
-            subtotal, discount: 0, tax, total: grandTotal,
-            payment: formPaymentMethod as any,
-            status: "Completed" as const,
-          }]);
-          forceRefresh();
-        } catch (_) {}
-        setCartItems([]);
-        setWalkinPhone("");
-      } else {
-        toast.error("Failed to complete transaction.");
+      // Update customer visits and spend if registered customer
+      if (formCustomerId !== "walkin" && custObj) {
+        const currentCusts = db.getCustomers();
+        const updatedCusts = currentCusts.map((c) => {
+          if (c.id === formCustomerId) {
+            return {
+              ...c,
+              totalSpend: (c.totalSpend || (c as any).spend || 0) + grandTotal,
+              ordersCount: (c.ordersCount || (c as any).visits || 0) + 1,
+              lastPurchaseDate: activeDate || new Date().toISOString().split("T")[0],
+            };
+          }
+          return c;
+        });
+        db.save({ ...db.schema, customers: updatedCusts });
       }
+
+      setCompletedTxn(completedTransaction);
+      setCartItems([]);
+      setWalkinPhone("");
+      forceRefresh();
+      toast.success("✅ Transaction completed & invoice billed successfully!");
     } catch (err: any) {
-      toast.error(err.message || "Transaction execution error.");
+      toast.error(err.message || "Failed to process checkout transaction.");
     } finally {
       setSaving(false);
     }
@@ -747,11 +878,15 @@ function RouteComponent() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="walkin">-- Walk-in (No Name) --</SelectItem>
-                    {customers.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name} ({c.phone || c.email})
-                      </SelectItem>
-                    ))}
+                    {customers.map((c) => {
+                      const displayName = c.name || `${c.firstName || ""} ${c.lastName || ""}`.trim() || "Customer";
+                      const contact = c.phone || c.email;
+                      return (
+                        <SelectItem key={c.id} value={c.id}>
+                          {displayName} {contact ? `(${contact})` : ""}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
 

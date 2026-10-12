@@ -344,7 +344,11 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
         setLogistics(Array.isArray(logs) ? logs : []);
         setStaff(Array.isArray(stf) ? stf : []);
 
-        setSyncRev((prev) => prev + 1);
+        const prevCounts = `${currentSchema.products?.length || 0}-${currentSchema.transactions?.length || 0}-${currentSchema.customers?.length || 0}`;
+        const newCounts = `${mergedProducts.length}-${mergedTransactions.length}-${mergedCustomers.length}`;
+        if (prevCounts !== newCounts) {
+          setSyncRev((prev) => prev + 1);
+        }
       } catch (err) {
         console.warn("Failed to sync with database.", err);
         setIsOffline(true);
@@ -353,7 +357,7 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     if (user && !isOffline) {
       syncData();
-      intervalId = setInterval(syncData, 8000);
+      intervalId = setInterval(syncData, 45000);
     }
 
     return () => {

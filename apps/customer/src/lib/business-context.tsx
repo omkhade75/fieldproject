@@ -327,11 +327,29 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
         }));
 
         const currentSchema = db.schema;
+        const existingProducts = currentSchema.products || [];
+        const customLocalProducts = existingProducts.filter(
+          (p) => !mappedProducts.some((mp) => mp.id === p.id)
+        );
+        const mergedProducts = [...mappedProducts, ...customLocalProducts];
+
+        const existingTransactions = currentSchema.transactions || [];
+        const customLocalTransactions = existingTransactions.filter(
+          (t) => !mappedTransactions.some((mt) => mt.id === t.id)
+        );
+        const mergedTransactions = [...mappedTransactions, ...customLocalTransactions];
+
+        const existingCustomers = currentSchema.customers || [];
+        const customLocalCustomers = existingCustomers.filter(
+          (c) => !mappedCustomers.some((mc) => mc.id === c.id)
+        );
+        const mergedCustomers = [...mappedCustomers, ...customLocalCustomers];
+
         db.save({
           ...currentSchema,
-          products: mappedProducts,
-          transactions: mappedTransactions,
-          customers: mappedCustomers,
+          products: mergedProducts,
+          transactions: mergedTransactions,
+          customers: mergedCustomers,
           suppliers: mappedSuppliers,
           expenses: mappedExpenses,
           purchaseOrders: mappedPurchaseOrders,
@@ -344,7 +362,11 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
         setLogistics(Array.isArray(logs) ? logs : []);
         setStaff(Array.isArray(stf) ? stf : []);
 
-        setSyncRev((prev) => prev + 1);
+        const prevCounts = `${currentSchema.products?.length || 0}-${currentSchema.transactions?.length || 0}-${currentSchema.customers?.length || 0}`;
+        const newCounts = `${mergedProducts.length}-${mergedTransactions.length}-${mergedCustomers.length}`;
+        if (prevCounts !== newCounts) {
+          setSyncRev((prev) => prev + 1);
+        }
       } catch (err) {
         console.warn("Failed to sync with database.", err);
         setIsOffline(true);
@@ -353,7 +375,7 @@ export const BusinessDataProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
     if (user && !isOffline) {
       syncData();
-      intervalId = setInterval(syncData, 8000);
+      intervalId = setInterval(syncData, 45000);
     }
 
     return () => {
