@@ -6,159 +6,309 @@
 [![CI Build Verification](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml/badge.svg)](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml)
 ![Node.js Version](https://img.shields.io/badge/Node.js-v20-brightgreen?style=flat&logo=node.js)
 ![NestJS](https://img.shields.io/badge/NestJS-v10-red?style=flat&logo=nestjs)
-![TypeScript](https://img.shields.io/badge/TypeScript-96%25-blue?style=flat&logo=typescript)
+![React](https://img.shields.io/badge/React-v18-61dafb?style=flat&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5-blue?style=flat&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-38bdf8?style=flat&logo=tailwindcss)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-2d3748?style=flat&logo=prisma)
 ![License](https://img.shields.io/badge/License-MIT-purple?style=flat)
 
 <br />
 
 [**👑 Owner Portal**](https://bizora-owner.onrender.com) &nbsp;•&nbsp;
 [**🛍️ Customer CRM**](https://bizora-customer.onrender.com) &nbsp;•&nbsp;
-[**🌐 Web Marketing**](https://bizora-web.onrender.com) &nbsp;•&nbsp;
-[**⚙️ Backend API**](https://bizora-backend-gtoe.onrender.com)
+[**🌐 Marketing Portal**](https://bizora-web.onrender.com) &nbsp;•&nbsp;
+[**⚙️ Backend Gateway**](https://bizora-backend-gtoe.onrender.com)
 
 <br />
 
 </div>
 
-**Bizora AI** is an enterprise-grade, multi-tenant AI Business Operating System designed for modern retail chains, supermarkets, franchises, and multi-department enterprises. It unifies POS Billing, Inventory Stock Control, Double-Entry Accounting, Customer CRM, Automated WhatsApp Messaging, and Gemini AI Decision Intelligence into a single unified control plane.
+**Bizora AI** is an enterprise-grade, multi-tenant **AI Business Operating System (OS)** engineered for modern retail chains, supermarkets, Kirana stores, FMCG distributors, electronics, and apparel businesses. 
+
+It eliminates traditional paper bill books, fragmented software, and expensive proprietary barcode guns by consolidating **Receipt POS Billing**, **Camera-based Barcode Scanning**, **Inventory & Expiry Control**, **Customer Khata (Credit Ledger)**, **Double-Entry Accounting**, **Automated WhatsApp Digital Invoicing (Twilio)**, **Autonomous Voice Reordering in Regional Languages (Vapi.ai)**, and **CEO/CFO Decision Intelligence (Google Gemini AI)** into a single unified platform.
 
 ---
 
-## 🌐 Live Deployed Portals Quick Reference
+## 🌐 Live Deployed Services
 
-All static frontends communicate directly via REST API `fetch()` to the centralized NestJS backend hosted on Render:
+All client portals communicate with the centralized NestJS backend microservice hosted on Render:
 
-| Portal Role | Live Web URL | Key Capabilities & Features |
+| Service / Portal | Live URL | Core Responsibilities |
 | :--- | :--- | :--- |
-| **👑 Business Owner** | [https://bizora-owner.onrender.com](https://bizora-owner.onrender.com) | Executive P&L dashboard, double-entry GL ledger, barcode scanner product entry, inventory forecasting, daily sales & AI decisions. |
-| **🛍️ Customer Portal** | [https://bizora-customer.onrender.com](https://bizora-customer.onrender.com) | Customer CRM portal, digital POS receipt history, loyalty rewards wallet, order tracking, product reviews. |
-| **🌐 Marketing Portal** | [https://bizora-web.onrender.com](https://bizora-web.onrender.com) | Main landing page, platform overview, enterprise pricing, module feature tours, store onboarding. |
-| **⚙️ Backend API** | [https://bizora-backend-gtoe.onrender.com](https://bizora-backend-gtoe.onrender.com) | Centralized NestJS REST API microservice (`/api/products`, `/api/auth`, `/api/comms`, `/api/ai`). |
+| **👑 Business Owner Portal** | [https://bizora-owner.onrender.com](https://bizora-owner.onrender.com) | Fast POS billing, camera barcode scanner, live sales history, customer Khata, supplier scorecard, expiry radar, P&L reports, and AI decision center. |
+| **🛍️ Customer Storefront & CRM** | [https://bizora-customer.onrender.com](https://bizora-customer.onrender.com) | Customer portal for shoppers to view digital invoices, track order dispatches, manage loyalty points, check wallet balances, and provide feedback. |
+| **🌐 Web Marketing Portal** | [https://bizora-web.onrender.com](https://bizora-web.onrender.com) | Public marketing landing page, feature interactive tours, SaaS pricing calculator, and enterprise self-onboarding wizard. |
+| **⚙️ Centralized Backend API** | [https://bizora-backend-gtoe.onrender.com](https://bizora-backend-gtoe.onrender.com) | Production NestJS REST API Gateway (`/api/*`), managing multi-tenant schemas, authentication, background cron jobs, and AI agents. |
 
 ---
 
-## 🎯 Real-World Problem & Solution
+## 🎯 The Real-World Problem & The Bizora Solution
 
-### 🔴 The Real-World Business Problem
-Small and medium businesses, supermarket owners, retail chains, and franchise managers face severe operational inefficiencies:
-1. **Software Fragmentation**: Store owners juggle 4–6 separate disconnected tools — one app for billing POS, another for accounting, a third for inventory stock tracking, and personal WhatsApp for customer receipts.
-2. **Language Barriers**: Most enterprise ERPs are available in English only. Non-English speaking shopkeepers and staff in Tier 2/3 Indian cities struggle to operate complex desktop software.
-3. **Hardware Expenses**: Expensive hardware barcode scanners (\$100–\$300) and dedicated handheld devices increase setup costs for new retail stores.
-4. **Data Isolation & Communication Chaos**: Customer loyalty tracking and store P&L data exist in isolated silos with zero automated intelligence.
+### 🔴 The Problem in Modern Retail
+1. **Software & Data Fragmentation**: Shopkeepers juggle 4–6 separate disconnected tools — one app for billing, another for accounting, a desktop ledger for stock, and personal WhatsApp for receipts.
+2. **Expensive Hardware Barriers**: Traditional retail setups force owners to invest \$100–\$300 in external handheld barcode scanner guns, thermal desktop units, and specialized POS machines.
+3. **Language Barriers**: Most ERPs are built strictly in English. Non-English speaking shopkeepers, cashiers, and warehouse staff across Tier-2/3 Indian cities struggle with complex accounting software.
+4. **Food & Perishable Waste**: Grocery and dairy stores suffer huge margin losses due to lack of batch expiry tracking and FIFO management.
+5. **Credit (Udhar) Tracking Chaos**: Manual paper Khata books lead to lost receivables, delayed collections, and friction with regular customers.
 
-### 🟢 How Bizora AI Solves It
-Bizora AI acts as an **All-in-One AI Business Operating System**:
-- **Single Control Plane**: Unifies POS Billing, GL Accounting, Stock Management, and Customer CRM into one connected platform.
-- **WhatsApp Automation**: Digital receipts & low-stock alerts delivered automatically via Twilio WhatsApp API.
-- **12 Indian Regional Languages**: Native UI accessibility in Hindi, Marathi, Gujarati, Tamil, Telugu, Kannada, Malayalam, Bengali, Punjabi, Odia, Assamese, and English.
-- **Hardware-Free Camera Barcode Scanning**: Turn any smartphone or laptop webcam into an instant barcode scanner using the browser `BarcodeDetector` API.
-- **AI Decision Intelligence**: Gemini AI-powered business insights, sales forecasting, inventory anomaly detection, and automated recommendations.
+### 🟢 The Bizora AI Solution
+* **Unified Single Control Plane**: Seamless integration of POS, Stock Control, Khata Ledger, and P&L into a single browser/mobile tab.
+* **Zero Hardware Gun Required**: Uses the standard browser `BarcodeDetector` / camera stream on any smartphone or tablet to scan EAN/UPC barcodes instantly.
+* **12 Indian Regional Languages**: Full UI localization in Hindi, Marathi, Gujarati, Tamil, Telugu, Kannada, Malayalam, Bengali, Punjabi, Odia, Assamese, and English.
+* **Automated WhatsApp Digital Receipts**: Invoices dispatched automatically to customer phones via the Twilio WhatsApp API, including PDF links.
+* **Expiry Radar**: Batch expiration monitoring with proactive amber/red alerts before products turn unsellable.
+* **Autonomous AI Agents (Gemini + Vapi)**:
+  - **Gemini AI**: Acts as an in-house Virtual CEO & CFO, diagnosing anomalies, margin leaks, and forecasting demand spikes for festivals and rainy weekends.
+  - **BizVoice (Vapi.ai)**: Autonomous voice calls in regional languages (Hindi & Marathi) to wholesalers to place reorders hands-free.
 
 ---
 
-## ⚔️ Market Competition & Why Choose Bizora AI
+## ⚔️ Competitive Advantage
 
-| Feature / Capability | Bizora AI | [Vyapar App](https://vyaparapp.in) | [Khatabook](https://khatabook.com) | [Zoho Books](https://www.zoho.com/books) | [Odoo ERP](https://www.odoo.com) |
+| Feature / Capability | Bizora AI | [Vyapar](https://vyaparapp.in) | [Khatabook](https://khatabook.com) | [Zoho Books](https://www.zoho.com/books) | [Odoo ERP](https://www.odoo.com) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **All-in-One Multitenant OS** | ✅ Yes | ❌ Billing Only | ❌ Ledger Only | ⚠️ Complex Addons | ⚠️ Expensive Hosting |
-| **Automated WhatsApp POS Receipts**| ✅ Native | ⚠️ Manual Share | ⚠️ Manual Share | ⚠️ Paid Extension | ⚠️ Paid Extension |
+| **All-in-One Multi-Tenant OS** | ✅ Native | ❌ Billing Only | ❌ Ledger Only | ⚠️ Complex Add-ons | ⚠️ Expensive Hosting |
+| **Camera Barcode Scanning (Web)**| ✅ Built-in | ❌ Hardware Only | ❌ Not Supported | ❌ Hardware Only | ⚠️ Module Required |
 | **12 Indian Regional Languages** | ✅ Native | ⚠️ 4 Languages | ⚠️ 5 Languages | ❌ English Only | ❌ English Only |
-| **Camera Barcode Scanner (Web API)**| ✅ Native | ❌ Hardware Only | ❌ No | ❌ Hardware Only | ⚠️ Module Required |
-| **AI Decision Intelligence** | ✅ Gemini AI | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Multi-Store Tenant Isolation** | ✅ Built-in | ❌ Single Store | ❌ Single Store | ⚠️ Enterprise Tier | ⚠️ Enterprise Tier |
-
-### 🚀 Why Choose Bizora AI? (Unique Value Proposition)
-1. **Zero Hardware Cost**: Start scanning barcodes and billing customers instantly from any mobile phone or browser without buying external barcode guns.
-2. **AI-Driven Insights**: Gemini AI analyzes your business data to generate actionable recommendations, sales forecasts, and anomaly alerts.
-3. **Localized for Regional Businesses**: Store staff and shopkeepers can operate the entire platform in their native regional language with 1-click toggling.
-4. **Automated Customer Communications**: WhatsApp-powered digital receipts, low-stock notifications, and customer outreach — all built-in.
+| **Automated WhatsApp Dispatch** | ✅ Twilio API | ⚠️ Manual Share | ⚠️ Manual Share | ⚠️ Paid Extension | ⚠️ Paid Extension |
+| **Autonomous Voice Reordering** | ✅ Vapi.ai | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Predictive AI Demand & Anomalies**| ✅ Gemini AI | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Expiry & Batch Radar (FIFO)** | ✅ Built-in | ⚠️ Basic | ❌ No | ⚠️ Add-on Required | ⚠️ Complex Setup |
 
 ---
 
-## ✨ Key Features & Technological Highlights
-
-### 1. 🌞 Professional Light & Dark Mode
-- **Clean SaaS Aesthetics**: Warm-cream background palette (`#FAFAF8`) with crisp solid cards, soft shadows, and clean border lines.
-- **Instant Toggle**: Sun/Moon header button on all 3 portals with zero-flicker `localStorage` persistence.
-
-### 2. 🇮🇳 12 Indian Regional Languages Support
-- Supported languages: **English** (`en`), **Hindi** (`hi`), **Marathi** (`mr`), **Gujarati** (`gu`), **Tamil** (`ta`), **Telugu** (`te`), **Kannada** (`kn`), **Malayalam** (`ml`), **Bengali** (`bn`), **Punjabi** (`pa`), **Odia** (`or`), and **Assamese** (`as`).
-- Header Globe selector dropdown with search filtering + dedicated Settings page regional language picker.
-
-### 3. 📷 Camera Barcode Scanner & Simplified Product Entry
-- **Connect Scanner**: Camera viewfinder modal utilizing browser `BarcodeDetector` API for instant barcode detection.
-- **Fast Product Entry**: Simplified form requiring only **Product Name** and **Selling Price** with automated SKU and Barcode generation.
-
-### 4. 🤖 Gemini AI Decision Intelligence
-- **Business Insights**: AI-powered analysis of sales trends, inventory health, and financial performance.
-- **Anomaly Detection**: Automated flagging of unusual business patterns and operational risks.
-- **Smart Recommendations**: AI-generated actionable suggestions for inventory reordering, pricing, and revenue optimization.
-
-### 5. 🎨 Custom Bizora AI Vector Logo Component
-- Custom geometric 3D-gradient vector mark (`BizoraLogo`) with color-coded portal badges across all sidebars and sign-in pages.
-
----
-
-## 🏛️ Platform Architecture & Deployment Topology
+## 💎 Key Features Breakdown
 
 ```
-bizora-ai/
+├── 🛒 Fast Receipt POS Billing (Camera Barcode Scanning & Thermal Print)
+├── 📦 FIFO Stock & Warehouse Inventory (Low-Stock Triggers & Reorder Levels)
+├── 🚨 Expiry Radar (Perishable Batch Tracking for Dairy, FMCG & Foods)
+├── 📒 Customers & Khata Ledger (Digital Udhar Book with WhatsApp Reminders)
+├── 📊 Double-Entry Accounting (Expenses, Income, Bank Accounts & P&L)
+├── 🚚 Logistics & Dispatch Control (Shipment tracking & delivery ETAs)
+├── 🤝 Supplier Hub & Purchase Orders (Wholesaler scorecards & inbound POs)
+├── 🤖 Gemini AI Decision Center (Anomaly detection, demand forecast, AI Q&A)
+├── 📞 BizVoice Assistant (Autonomous Hindi/Marathi reordering calls via Vapi)
+└── 🌍 Multi-Language Localization (12 Indian Regional Languages with 1-click switch)
+```
+
+---
+
+## 💳 SaaS Subscription Packages
+
+Store workspaces can subscribe to modular tiers:
+
+* **Starter / Kirana (Free Forever — ₹0)**:
+  - Single-counter billing & thermal print support.
+  - Hardware-free camera barcode scanning.
+  - Up to 200 products & stock tracking.
+  - 2 Languages (English & Hindi).
+  - Manual WhatsApp receipt sharing.
+* **Growth / Retailer (₹699 / mo or ₹6,999 / yr — Save 20%)**:
+  - Unlimited POS billing & fast counter checkout.
+  - Camera & hardware barcode gun support.
+  - Unlimited products with FIFO batch control & Expiry Radar.
+  - 12 Indian regional languages.
+  - 500 Automated WhatsApp receipts / month.
+  - 10 BizVoice voice calls / month.
+  - 100 Gemini AI queries / month.
+  - Double-entry accounting & P&L reports.
+* **Enterprise Chain (₹1,999 / mo or ₹18,999 / yr)**:
+  - Multi-store branch workspace management.
+  - 10 Staff user accounts with role-based permissions (Cashier, Manager, Admin).
+  - Unlimited automated WhatsApp receipts.
+  - 100 BizVoice voice minutes / month.
+  - Unlimited Gemini AI model queries.
+  - Dedicated Super Admin priority support & audit trail logging.
+
+---
+
+## 🏛️ Monorepo Architecture & Directory Topology
+
+```
+bizora-monorepo/
 ├── apps/
-│   ├── owner/                 # 👑 Owner Portal (bizora-owner.onrender.com)
-│   ├── customer/              # 🛍️ Customer Portal (bizora-customer.onrender.com)
-│   └── web/                   # 🌐 Main Marketing Portal (bizora-web.onrender.com)
+│   ├── owner/                 # 👑 Owner Portal (React 18 + TanStack Router + Tailwind)
+│   ├── customer/              # 🛍️ Customer CRM & Storefront (Shopper portal)
+│   └── web/                   # 🌐 Marketing Landing & Store Registration
 ├── services/
-│   └── backend/               # ⚙️ NestJS REST API Backend (bizora-backend-gtoe.onrender.com)
+│   └── backend/               # ⚙️ NestJS REST API Microservice
 │       └── src/
-│           ├── controllers/   # REST Controllers (Auth, POS, Inventory, AI, Comms)
-│           ├── services/      # Business Logic Services
-│           ├── database/      # Prisma & Database Services
-│           └── app.module.ts  # Master Module Registration
+│           ├── ai/            # Gemini AI Agents (CEO & CFO autonomous agents)
+│           ├── controllers/   # REST Controllers (Auth, Products, POS, Comms, AI)
+│           ├── database/      # Prisma PostgreSQL Database Module
+│           ├── mongodb/       # MongoDB Atlas Telemetry & Audit Logs Module
+│           └── services/      # Business logic services (Accounts, Inventory, Comms)
 └── packages/
-    ├── database/              # Supabase PostgreSQL Prisma Schema
-    ├── ui/                    # Shared UI Components & Design Tokens
-    └── types/                 # Shared TypeScript Contracts
+    ├── database/              # Shared Prisma Schema, Migrations & Seeds
+    ├── ui/                    # Shared Design System & UI Components
+    └── types/                 # Shared TypeScript Contracts & API Payloads
 ```
 
 ---
 
-## 🛠️ Key Backend Environment Variables
+## ⚙️ Environment Configuration
 
-Set these environment variables on your Render Web Service (`bizora-backend`):
+Set these variables in your server configuration (e.g., Render Environment settings):
 
-| Variable Name | Description |
+### 1. Database & Persistence
+| Variable | Description |
 | :--- | :--- |
-| `DATABASE_URL` | PostgreSQL / Prisma Connection String |
-| `JWT_SECRET` | Secret key for JWT session tokens |
-| `GEMINI_API_KEY` | Google Gemini AI Key for intelligent decision insights |
+| `DATABASE_URL` | PostgreSQL connection pool URL (e.g. Supabase Transaction Pooler, port 6543) |
+| `DIRECT_URL` | PostgreSQL direct connection URL (used for running Prisma migrations, port 5432) |
+| `MONGODB_URI` | MongoDB Atlas URI for telemetry, audit trails, and auto-healing error logs |
+
+### 2. Authentication & Security
+| Variable | Description |
+| :--- | :--- |
+| `JWT_SECRET` | Secret key used to sign access tokens |
+| `JWT_REFRESH_SECRET` | Secret key used to sign refresh tokens |
+| `CORS_ORIGIN` | Allowed frontend origins (e.g. `https://bizora-owner.onrender.com`) |
+| `SYSTEM_ADMIN_EMAIL` | Root administrator email for super-admin governance |
+
+### 3. Artificial Intelligence & Voice Agents
+| Variable | Description |
+| :--- | :--- |
+| `GEMINI_API_KEY` | Google Gemini API key powering AI Decision Center, forecasting, and anomalies |
+| `VAPI_AGENT_ID` | Vapi.ai assistant ID for automated Marathi/Hindi outbound reordering calls |
+| `VAPI_PHONE_ID` | Vapi registered virtual phone number ID |
+| `VAPI_PUBLIC_KEY` | Vapi public client key |
+| `VAPI_PRIVATE_KEY` | Vapi private API key |
+
+### 4. Communications & Notifications
+| Variable | Description |
+| :--- | :--- |
+| `TWILIO_ACCOUNT_SID` | Twilio Account SID |
+| `TWILIO_AUTH_TOKEN` | Twilio Auth Token |
+| `TWILIO_WHATSAPP_SENDER` | Twilio approved WhatsApp sender number (e.g., `whatsapp:+14155238886`) |
+| `OWNER_WHATSAPP_NUMBER` | Default store owner phone number for critical alerts |
+| `MANAGER_WHATSAPP_NUMBER`| Store manager phone number for daily EOD reports |
+| `RESEND_API_KEY` | Resend API key for transactional emails & onboarding |
 
 ---
 
-## ⚡ Quick Start & Local Development
+## 🔌 Complete REST API Reference
 
-### 1. Install Dependencies
+All requests must include the header:  
+`Authorization: Bearer <bizora_access_token>`
+
+```
+Authentication & Users
+  POST   /api/auth/login                  # Authenticate with email & password
+  POST   /api/auth/google                 # Sign in with Google Identity token
+  GET    /api/auth/me                     # Active user session profile & roles
+  POST   /api/auth/impersonate            # Super-admin tenant impersonation
+  POST   /api/registration/register       # Register new merchant organization
+  POST   /api/setup/complete              # Complete onboarding setup wizard
+
+Products & Inventory
+  GET    /api/products                    # List catalog products & stock counts
+  POST   /api/products                    # Create new product / SKU
+  GET    /api/products/:id                # Retrieve single product by ID
+  PUT    /api/products/:id                # Update stock, price, cost, or expiry date
+  DELETE /api/products/:id                # Soft-delete product
+  POST   /api/products/bulk               # Bulk CSV/Excel inventory import
+
+POS Billing & Ledger
+  POST   /api/transactions                # Process POS transaction checkout
+  GET    /api/transactions                # Historical sales transactions & audits
+  DELETE /api/transactions                # Clear transactions (demo/admin maintenance)
+
+Customers & Khata
+  GET    /api/customers                   # List customer directory & credit balances
+  POST   /api/customers                   # Register new customer
+  GET    /api/customers/:id               # Customer profile, loyalty points, past bills
+  PUT    /api/customers/:id               # Settle credit balance or update details
+  POST   /api/customers/bulk              # Bulk customer import
+
+Suppliers & Purchase Orders
+  GET    /api/suppliers                   # Wholesaler directory & performance scores
+  POST   /api/suppliers                   # Register new supplier
+  GET    /api/suppliers/purchase-orders   # List purchase orders (POs)
+  POST   /api/suppliers/purchase-orders   # Issue new purchase order for stock replenishment
+  PUT    /api/suppliers/purchase-orders/:id # Update PO status (Draft -> Sent -> Received)
+
+AI Decision Intelligence & Communications
+  POST   /api/ai/ask                      # Query Bizora Gemini AI Model with store telemetry
+  GET    /api/ai/model-status             # AI model inference health & confidence score
+  GET    /api/analytics/command-center    # Aggregated store performance KPIs
+  GET    /api/analytics/anomalies         # Detect cash leakage & shrinkage risks
+  GET    /api/analytics/forecasting       # Demand forecasting predictions
+  POST   /api/analytics/eod-report        # Generate End-of-Day business report
+  POST   /api/comms/whatsapp/send         # Dispatch automated digital receipt to customer
+  POST   /api/comms/vapi/call             # Trigger autonomous AI voice reorder call
+  GET    /api/comms/logs                  # View communication dispatch logs
+```
+
+---
+
+## ⚡ Local Development Setup
+
+### 1. Prerequisites
+- **Node.js** v20+ or **Bun** v1.1+
+- **PostgreSQL** (or Supabase project)
+- **MongoDB** (or MongoDB Atlas free cluster)
+
+### 2. Clone Repository & Install Dependencies
 ```bash
+git clone https://github.com/omkhade75/fieldproject.git
+cd fieldproject
+
+# Install all monorepo dependencies
 npm install
 ```
 
-### 2. Generate Prisma Database Client
+### 3. Setup Environment Variables
 ```bash
+cp .env.example .env
+# Fill in your DATABASE_URL, DIRECT_URL, MONGODB_URI, JWT_SECRET, and GEMINI_API_KEY
+```
+
+### 4. Initialize Database
+```bash
+# Generate Prisma Client & compile database package
 npm run build -w packages/database
+
+# Optional: Seed sample retail store data
+npm run seed -w packages/database
 ```
 
-### 3. Build Backend Service
+### 5. Run Development Servers
 ```bash
-npm run build -w services/backend
+# Start backend API (Port 8000 / 3000)
+npm run dev:backend
+
+# Start Owner Portal in a new terminal (Port 5173)
+npm run dev:owner
+
+# Start Customer CRM Portal (Port 5174)
+npm run dev:customer
+
+# Start Web Marketing Portal (Port 5175)
+npm run dev
 ```
 
-### 4. Build Frontends
-```bash
-npm run build -w apps/owner
-npm run build -w apps/customer
-npm run build -w apps/web
-```
+---
+
+## 🚀 Production Deployment (Render)
+
+The monorepo contains pre-configured build scripts for seamless deployment on [Render](https://render.com):
+
+* **Backend Service (`bizora-backend`)**:
+  - **Build Command**: `npm run build:backend`
+  - **Start Command**: `node services/backend/dist/main.js`
+* **Owner Portal (`bizora-owner`)**:
+  - **Build Command**: `npm run build:render:owner`
+  - **Publish Directory**: `apps/owner/dist`
+* **Customer Portal (`bizora-customer`)**:
+  - **Build Command**: `npm run build:render:customer`
+  - **Publish Directory**: `apps/customer/dist`
+* **Marketing Web (`bizora-web`)**:
+  - **Build Command**: `npm run build:render:web`
+  - **Publish Directory**: `apps/web/dist`
 
 ---
 
 ## 📄 License
-© 2026 Bizora AI · Enterprise Decision Intelligence & Business OS
+Distributed under the **MIT License**.  
+© 2026 **Bizora AI** · Enterprise Decision Intelligence & Business OS. All rights reserved.
