@@ -3,22 +3,49 @@
 
 <div align="center">
 
-[![CI Build Verification](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml/badge.svg)](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/Node.js-v20%20LTS-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![MERN Stack Architecture](https://img.shields.io/badge/Stack-MERN%20(MongoDB%20•%20Express%20•%20React%20•%20Node.js)-10b981?style=for-the-badge&logo=mongodb&logoColor=white)](https://github.com/omkhade75/fieldproject)
+
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20Cluster-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Express.js](https://img.shields.io/badge/Express-REST%20Engine-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com/)
 [![React](https://img.shields.io/badge/React-v19.2-38bdf8?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-v20%20LTS-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-v5.8-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![TanStack Router](https://img.shields.io/badge/TanStack-Router%20%26%20Start-ff4154?style=flat-square&logo=tanstack&logoColor=white)](https://tanstack.com/router)
-[![Vite](https://img.shields.io/badge/Vite-v8.1-646cff?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS%20v4-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Prisma ORM](https://img.shields.io/badge/Prisma-v6.3-2d3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![CI Build Verification](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml/badge.svg)](https://github.com/omkhade75/fieldproject/actions/workflows/ci.yml)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-PgBouncer-4169e1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-Auth%20%26%20Realtime-3ecf8e?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Vapi AI](https://img.shields.io/badge/Voice%20AI-Vapi-8b5cf6?style=flat-square)](https://vapi.ai/)
+[![Prisma ORM](https://img.shields.io/badge/Prisma-v6.3-2d3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![Security](https://img.shields.io/badge/Security-OWASP%20Hardened-10b981?style=flat-square&logo=shield)](https://owasp.org/)
 
 **[Live Production Owner Portal](https://bizora-owner.onrender.com)** • **[Architecture Guide](file:///D:/projects/project-h-main/FULL_STACK_ARCHITECTURE.md)** • **[Report an Issue](https://github.com/omkhade75/fieldproject/issues)**
 
 </div>
+
+---
+
+## 🍃 Enterprise MERN Stack Architecture
+
+Bizora is engineered on the industry-standard **MERN (MongoDB, Express, React, Node.js)** full-stack architecture, augmented with TypeScript and PostgreSQL for hybrid enterprise data management:
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                           MERN FULL-STACK ARCHITECTURE                           │
+├─────────┬───────────────────┬────────────────────────────────────────────────────┤
+│ 🍃 [M]  │ MongoDB Atlas     │ • Unstructured AI context & agent memory logs     │
+│         │ Document Database │ • Cashier event streams & hardware telemetry       │
+│         │                   │ • Append-only audit trails & interaction logs      │
+├─────────┼───────────────────┼────────────────────────────────────────────────────┤
+│ ⚡ [E]  │ Express / Nitro   │ • High-throughput REST API microservice layer      │
+│         │ Server Engine     │ • JWT authentication guards & tenant isolation     │
+│         │                   │ • Server-Side Rendering (SSR) & API routing        │
+├─────────┼───────────────────┼────────────────────────────────────────────────────┤
+│ ⚛️ [R]  │ React 19          │ • Sub-50ms reactive POS barcode checkout counter   │
+│         │ Frontend Layer    │ • TanStack Router type-safe file-based navigation  │
+│         │                   │ • Hardware-accelerated Recharts KPI visualizations │
+├─────────┼───────────────────┼────────────────────────────────────────────────────┤
+│ 🟢 [N]  │ Node.js 20 LTS    │ • Asynchronous offline transaction sync workers    │
+│         │ Runtime Engine    │ • Dual-write reconciliation queue orchestrator     │
+│         │                   │ • Dynamic NPCI UPI QR code cryptographic generator │
+└─────────┴───────────────────┴────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -53,8 +80,8 @@ By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR paym
 | Team Member | Role & Ownership | GitHub & Contact |
 | :--- | :--- | :--- |
 | <img src="https://github.com/omkhade75.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Om Khade"/><br/>**Om Khade** | **Project Creator & Lead Architect**<br/>• Core POS billing engine & sub-50ms offline sync architecture<br/>• TanStack Start & React 19 component design system<br/>• Prisma schema design, multi-tenant database partitioning<br/>• Dynamic UPI QR payment generation & double-entry ledger | [![GitHub](https://img.shields.io/badge/GitHub-omkhade75-181717?style=flat-square&logo=github)](https://github.com/omkhade75)<br/>[![Email](https://img.shields.io/badge/Email-omkhade09%40gmail.com-ea4335?style=flat-square&logo=gmail&logoColor=white)](mailto:omkhade09@gmail.com) |
-| <img src="https://github.com/musmadevaishnav123-dot.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Vaishnav Musmade"/><br/>**Vaishnav Musmade** | **Core Collaborator & Full-Stack Engineer**<br/>• Hyperlocal inventory stock tracking & automated FEFO expiry alerts<br/>• Doorstep OTP anti-fraud verification & dispatch logistics<br/>• Store telemetry dashboards, sales analytics & KPI charting<br/>• Database migration auditing & production stress testing | [![GitHub](https://img.shields.io/badge/GitHub-musmadevaishnav123--dot-181717?style=flat-square&logo=github)](https://github.com/musmadevaishnav123-dot)<br/>[![Profile](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
-| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Collaborator & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions workflow integration<br/>• Enterprise cybersecurity hardening, OWASP compliance & API contracts<br/>• Supabase realtime telemetry, error boundaries & profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Profile](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+| <img src="https://github.com/musmadevaishnav123-dot.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Vaishnav Musmade"/><br/>**Vaishnav Musmade** | **Core Collaborator & Full-Stack Engineer**<br/>• Hyperlocal inventory stock tracking & automated FEFO expiry alerts<br/>• Doorstep OTP anti-fraud verification & dispatch logistics<br/>• Store telemetry dashboards, sales analytics & KPI charting<br/>• Database migration auditing & production stress testing | [![GitHub](https://img.shields.io/badge/GitHub-musmadevaishnav123--dot-181717?style=flat-square&logo=github)](https://github.com/musmadevaishnav123-dot)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Collaborator & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions workflow integration<br/>• Enterprise cybersecurity hardening, OWASP compliance & API contracts<br/>• Supabase realtime telemetry, error boundaries & profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
 
 </div>
 
@@ -105,17 +132,19 @@ The checkout interface is optimized for rapid hardware keyboard usage without to
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack Breakdown
 
-| Layer | Technologies & Tools |
-| :--- | :--- |
-| **Frontend Framework** | React 19.2, TypeScript 5.8, Vite 8.1, TanStack Router & Start |
-| **Styling & Components** | Tailwind CSS v4, Radix UI Primitives, Lucide Icons, Sonner |
-| **Database & ORM** | PostgreSQL 16 (PgBouncer connection pool), Prisma ORM 6.3 |
-| **Cloud & Auth** | Supabase Auth, Supabase SSR, Realtime Sync |
-| **Secondary Datastore** | MongoDB Atlas (unstructured audit logs & telemetry events) |
-| **AI & Telephony** | Vapi AI Voice Receptionist, Gemini / Groq LLM API integrations |
-| **Server & Deployment** | Nitro Engine (SSR/Edge), Cloudflare Wrangler / Render Native |
+| Technology | Layer | Role in Bizora |
+| :--- | :--- | :--- |
+| **MongoDB Atlas** 🍃 | **M**ERN Datastore | High-throughput document store for cashier audit trails & AI interaction memory |
+| **Express / Nitro** ⚡ | M**E**RN Server Engine | High-throughput REST API microservice gateway & SSR routing middleware |
+| **React 19** ⚛️ | ME**R**N Frontend | Sub-50ms reactive POS counter, TanStack Router type-safe pages & UI primitives |
+| **Node.js 20 LTS** 🟢 | MER**N** Runtime | Asynchronous background workers, sync queues & atomic transaction reconciliation |
+| **TypeScript 5.8** | Language Standard | Strict end-to-end type safety between database contracts and frontend components |
+| **PostgreSQL 16** | Relational Ledger | ACID-compliant relational transactions, double-entry financial ledger & stock counts |
+| **Prisma ORM 6.3** | ORM Layer | Type-safe query builder with automated multi-tenant `workspaceId` enforcement |
+| **Tailwind CSS v4** | UI Styling | Modern, high-craft responsive design system with zero runtime CSS overhead |
+| **Vapi AI** | Voice Telephony | Autonomous 24/7 inbound AI voice receptionist for customer stock inquiries & orders |
 
 ---
 
@@ -124,6 +153,7 @@ The checkout interface is optimized for rapid hardware keyboard usage without to
 ### 1. Prerequisites
 * **Node.js**: `v20.x` LTS or higher
 * **npm**: `v10.x` or higher (or `bun` / `pnpm`)
+* **MongoDB**: MongoDB Atlas Cluster connection string
 * **PostgreSQL**: PostgreSQL 15+ database instance (or Supabase connection string)
 
 ### 2. Clone Repository
@@ -145,7 +175,10 @@ cp .env.example .env
 
 Ensure the following variables are configured:
 ```env
-# Database Credentials
+# MERN Stack - MongoDB Atlas Connection
+MONGODB_URI="mongodb+srv://username:password@your-cluster.mongodb.net/bizora?retryWrites=true&w=majority"
+
+# Relational Database - PostgreSQL (Supabase / Local)
 DATABASE_URL="postgresql://postgres:password@localhost:5432/bizora_owner?schema=public"
 DIRECT_URL="postgresql://postgres:password@localhost:5432/bizora_owner"
 
@@ -158,7 +191,7 @@ GEMINI_API_KEY="your-gemini-key"
 GROQ_API_KEY="your-groq-key"
 ```
 
-### 5. Generate Prisma Client
+### 5. Generate Database Client
 ```bash
 npx prisma generate
 ```
@@ -198,8 +231,9 @@ fieldproject/
 │   │   ├── auth-context.tsx    # Owner role-based access control (RBAC)
 │   │   ├── business-context.tsx# Multi-tenant state (products, stock, accounts)
 │   │   └── server/
+│   │       ├── mongodb.ts      # [M] MongoDB Atlas connection & audit logger
 │   │       └── prisma.ts       # Prisma client instance with tenant isolation
-│   ├── routes/                 # File-based routes (TanStack Router)
+│   ├── routes/                 # [R] React 19 file-based routes (TanStack Router)
 │   │   ├── __root.tsx          # Master layout & root context provider
 │   │   ├── _app.tsx            # Authenticated application shell & navigation
 │   │   ├── _app.billing.tsx    # High-speed POS barcode scanner & checkout
@@ -218,7 +252,7 @@ fieldproject/
 ├── components.json             # Shadcn-UI configuration
 ├── package.json                # Project dependencies & scripts
 ├── tsconfig.json               # TypeScript strict compilation settings
-└── vite.config.ts              # Vite & TanStack Start build configuration
+└── vite.config.ts              # [E] Express/Nitro & Vite build configuration
 ```
 
 ---
