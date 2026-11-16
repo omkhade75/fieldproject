@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-verify:
-    name: Build & Verify Monorepo
+    name: Build & Verify Owner Portal
     runs-on: ubuntu-latest
 
     steps:
@@ -21,23 +21,14 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: 📦 Install monorepo dependencies
+      - name: 📦 Install dependencies
         run: npm ci
 
       - name: 🗄️ Generate Prisma database client
-        run: npm run build -w packages/database
-
-      - name: ⚙️ Build NestJS Backend Service
-        run: npm run build -w services/backend
+        run: npx prisma generate
 
       - name: 👑 Build Business Owner Portal
-        run: npm run build -w apps/owner
+        run: npm run build
 
-      - name: 🛍️ Build Customer Portal
-        run: npm run build -w apps/customer
-
-      - name: 🌐 Build Marketing Web Portal
-        run: npm run build -w apps/web
-
-      - name: ✅ All Build Checks Passed
-        run: echo "All 3 portals and NestJS backend compiled cleanly with 0 errors!"
+      - name: ✅ Build Checks Passed
+        run: echo "Bizora Owner Portal compiled cleanly with 0 errors!"

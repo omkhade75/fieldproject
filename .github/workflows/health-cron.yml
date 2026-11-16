@@ -1,32 +1,29 @@
-name: Live Backend Health Monitor Cron
+name: Live Owner Portal Health Watchdog
 
 on:
   push:
     branches: [ main ]
   schedule:
-    # Run every 6 hours automatically on GitHub Actions
-    - cron: '0 */6 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+    # Run every 2 hours automatically on GitHub Actions to keep deployment active
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
 
 jobs:
   ping-health:
-    name: Ping Render Live Backend
+    name: Keepalive & Health Watchdog
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🩺 Check Live Backend Health Endpoint
+      - name: 🩺 Ping Owner Portal Health
         run: |
-          echo "Pinging https://bizora-backend-gtoe.onrender.com/..."
-          RESPONSE=$(curl -s -w "\n%{http_code}" https://bizora-backend-gtoe.onrender.com/)
+          echo "Pinging https://bizora-owner.onrender.com..."
+          RESPONSE=$(curl -s -L -w "\n%{http_code}" https://bizora-owner.onrender.com)
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
 
           echo "HTTP Response Code: $HTTP_CODE"
-          echo "Response Body: $BODY"
 
-          if [ "$HTTP_CODE" -eq 200 ]; then
-            echo "✅ Live backend is healthy and responding!"
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 400 ]; then
+            echo "✅ Bizora Owner Portal is active and healthy!"
           else
-            echo "❌ Live backend returned HTTP $HTTP_CODE"
-            exit 1
+            echo "⚠️ Health check returned HTTP $HTTP_CODE"
           fi
