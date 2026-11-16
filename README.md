@@ -21,6 +21,20 @@
 
 ---
 
+## 👥 Core Project Team & Collaborators
+
+<div align="center">
+
+| Team Member | Role & Ownership | GitHub & Contact |
+| :--- | :--- | :--- |
+| <img src="https://github.com/omkhade75.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Om Khade"/><br/>**Om Khade** | **Project Creator & Lead Architect**<br/>• Core POS billing engine & sub-50ms offline sync architecture<br/>• TanStack Start & React 19 component design system<br/>• Prisma schema design, multi-tenant database partitioning<br/>• Dynamic UPI QR payment generation & double-entry ledger | [![GitHub](https://img.shields.io/badge/GitHub-omkhade75-181717?style=flat-square&logo=github)](https://github.com/omkhade75)<br/>[![Email](https://img.shields.io/badge/Email-omkhade09%40gmail.com-ea4335?style=flat-square&logo=gmail&logoColor=white)](mailto:omkhade09@gmail.com) |
+| <img src="https://github.com/musmadevaishnav123-dot.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Vaishnav Musmade"/><br/>**Vaishnav Musmade** | **Core Collaborator & Full-Stack Engineer**<br/>• Hyperlocal inventory stock tracking & automated FEFO expiry alerts<br/>• Doorstep OTP anti-fraud verification & dispatch logistics<br/>• Store telemetry dashboards, sales analytics & KPI charting<br/>• Database migration auditing & production stress testing | [![GitHub](https://img.shields.io/badge/GitHub-musmadevaishnav123--dot-181717?style=flat-square&logo=github)](https://github.com/musmadevaishnav123-dot)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Collaborator & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions workflow integration<br/>• Enterprise cybersecurity hardening, OWASP compliance & API contracts<br/>• Supabase realtime telemetry, error boundaries & profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+
+</div>
+
+---
+
 ## 🍃 Enterprise MERN Stack Architecture
 
 Bizora is engineered on the industry-standard **MERN (MongoDB, Express, React, Node.js)** full-stack architecture, augmented with TypeScript and PostgreSQL for hybrid enterprise data management:
@@ -70,20 +84,6 @@ By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR paym
 │ • Predictive Orders │ • Supervisor Auth    │ • Automatic Order Logging │
 └─────────────────────┴──────────────────────┴───────────────────────────┘
 ```
-
----
-
-## 👥 Core Project Team & Collaborators
-
-<div align="center">
-
-| Team Member | Role & Ownership | GitHub & Contact |
-| :--- | :--- | :--- |
-| <img src="https://github.com/omkhade75.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Om Khade"/><br/>**Om Khade** | **Project Creator & Lead Architect**<br/>• Core POS billing engine & sub-50ms offline sync architecture<br/>• TanStack Start & React 19 component design system<br/>• Prisma schema design, multi-tenant database partitioning<br/>• Dynamic UPI QR payment generation & double-entry ledger | [![GitHub](https://img.shields.io/badge/GitHub-omkhade75-181717?style=flat-square&logo=github)](https://github.com/omkhade75)<br/>[![Email](https://img.shields.io/badge/Email-omkhade09%40gmail.com-ea4335?style=flat-square&logo=gmail&logoColor=white)](mailto:omkhade09@gmail.com) |
-| <img src="https://github.com/musmadevaishnav123-dot.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Vaishnav Musmade"/><br/>**Vaishnav Musmade** | **Core Collaborator & Full-Stack Engineer**<br/>• Hyperlocal inventory stock tracking & automated FEFO expiry alerts<br/>• Doorstep OTP anti-fraud verification & dispatch logistics<br/>• Store telemetry dashboards, sales analytics & KPI charting<br/>• Database migration auditing & production stress testing | [![GitHub](https://img.shields.io/badge/GitHub-musmadevaishnav123--dot-181717?style=flat-square&logo=github)](https://github.com/musmadevaishnav123-dot)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
-| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Collaborator & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions workflow integration<br/>• Enterprise cybersecurity hardening, OWASP compliance & API contracts<br/>• Supabase realtime telemetry, error boundaries & profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Collaborator](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
-
-</div>
 
 ---
 
