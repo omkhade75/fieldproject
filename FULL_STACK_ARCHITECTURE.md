@@ -149,5 +149,6 @@ Rather than forcing merchants to pay 2%–3% gateway fees to payment aggregators
 
 ## 9. Core Team & Engineering Collaborators
 
-* **Om Khade** ([@omkhade75](https://github.com/omkhade75)) — Lead Architect & Creator  
-* **Priyansh Dewan** ([@priyanshdewan](https://github.com/priyanshdewan)) — Core Contributor & Full-Stack Engineer  
+* **Om Khade** ([@omkhade75](https://github.com/omkhade75)) — Project Creator & Lead Architect  
+* **Vaishnav Musmade** ([@musmadevaishnav123-dot](https://github.com/musmadevaishnav123-dot)) — Core Collaborator & Full-Stack Engineer  
+* **Priyansh Dewan** ([@priyanshdewan](https://github.com/priyanshdewan)) — Core Collaborator & Full-Stack Engineer  

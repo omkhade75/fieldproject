@@ -24,9 +24,9 @@
 
 ## 📌 Executive Overview
 
-**Bizora Owner OS** is an enterprise-grade autonomous retail operating system built specifically for retail store owners, Kirana merchants, supermarket chains, and high-volume physical counters. 
+**Bizora Owner OS** is an enterprise-grade autonomous retail operating system engineered for retail store owners, Kirana merchants, supermarket chains, and high-velocity physical counters. 
 
-By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR payments**, **real-time batch inventory sync**, **double-entry financial ledger accounting**, and **autonomous AI decision intelligence**, Bizora eliminates operational fragmentation and equips brick-and-mortar stores with quick-commerce grade technology.
+By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR payments**, **real-time batch inventory sync**, **double-entry financial accounting**, and **autonomous AI decision intelligence**, Bizora eliminates operational fragmentation and equips brick-and-mortar stores with modern quick-commerce grade technology.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
@@ -46,6 +46,20 @@ By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR paym
 
 ---
 
+## 👥 Core Project Team & Collaborators
+
+<div align="center">
+
+| Team Member | Role & Ownership | GitHub & Contact |
+| :--- | :--- | :--- |
+| <img src="https://github.com/omkhade75.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Om Khade"/><br/>**Om Khade** | **Project Creator & Lead Architect**<br/>• Core POS billing engine & sub-50ms offline sync architecture<br/>• TanStack Start & React 19 component design system<br/>• Prisma schema design, multi-tenant database partitioning<br/>• Dynamic UPI QR payment generation & double-entry ledger | [![GitHub](https://img.shields.io/badge/GitHub-omkhade75-181717?style=flat-square&logo=github)](https://github.com/omkhade75)<br/>[![Email](https://img.shields.io/badge/Email-omkhade09%40gmail.com-ea4335?style=flat-square&logo=gmail&logoColor=white)](mailto:omkhade09@gmail.com) |
+| <img src="https://github.com/musmadevaishnav123-dot.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Vaishnav Musmade"/><br/>**Vaishnav Musmade** | **Core Collaborator & Full-Stack Engineer**<br/>• Hyperlocal inventory stock tracking & automated FEFO expiry alerts<br/>• Doorstep OTP anti-fraud verification & dispatch logistics<br/>• Store telemetry dashboards, sales analytics & KPI charting<br/>• Database migration auditing & production stress testing | [![GitHub](https://img.shields.io/badge/GitHub-musmadevaishnav123--dot-181717?style=flat-square&logo=github)](https://github.com/musmadevaishnav123-dot)<br/>[![Profile](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Collaborator & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions workflow integration<br/>• Enterprise cybersecurity hardening, OWASP compliance & API contracts<br/>• Supabase realtime telemetry, error boundaries & profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Profile](https://img.shields.io/badge/Collaborator-Active-10b981?style=flat-square)](https://github.com/omkhade75/fieldproject/settings/access) |
+
+</div>
+
+---
+
 ## ✨ Core Capabilities & Engineering Highlights
 
 ### ⚡ 1. Sub-50ms Dual-Write Offline POS Counter
@@ -58,7 +72,7 @@ By unifying **sub-50ms offline barcode billing**, **instant zero-fee UPI QR paym
 * **Instant Reconciliation**: Customers scan with **Google Pay, PhonePe, Paytm, BHIM, or Cred** for zero-commission direct bank transfers without intermediary gateway deductions.
 
 ### 📦 3. Live Batch Inventory & Expiry Watchdog
-* **Batch Tracking & FEFO**: Automated *First-Expired, First-Out* (FEFO) alerts safeguard perishable goods and FMCG products from going to waste.
+* **Batch Tracking & FEFO**: Automated *First-Expired, First-Out* (FEFO) alerts safeguard perishable goods and FMCG products from waste.
 * **Auto-Reorder Triggers**: Reorder levels dynamically recalculate based on historical sales velocity and seasonal trends.
 
 ### 📊 4. Double-Entry Accounting & Real-Time P&L
@@ -102,19 +116,6 @@ The checkout interface is optimized for rapid hardware keyboard usage without to
 | **Secondary Datastore** | MongoDB Atlas (unstructured audit logs & telemetry events) |
 | **AI & Telephony** | Vapi AI Voice Receptionist, Gemini / Groq LLM API integrations |
 | **Server & Deployment** | Nitro Engine (SSR/Edge), Cloudflare Wrangler / Render Native |
-
----
-
-## 👥 Core Engineering Team & Collaborators
-
-<div align="center">
-
-| Collaborator | Role & Responsibility | Links & Contact |
-| :--- | :--- | :--- |
-| <img src="https://github.com/omkhade75.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Om Khade"/><br/>**Om Khade** | **Lead Architect & Full-Stack Engineer**<br/>• Core POS billing engine & sub-50ms offline sync architecture<br/>• TanStack Start & React 19 component design system<br/>• Prisma schema design, multi-tenant database partitioning<br/>• Dynamic UPI QR generation & double-entry ledger | [![GitHub](https://img.shields.io/badge/GitHub-omkhade75-181717?style=flat-square&logo=github)](https://github.com/omkhade75)<br/>[![Email](https://img.shields.io/badge/Email-omkhade09%40gmail.com-ea4335?style=flat-square&logo=gmail&logoColor=white)](mailto:omkhade09@gmail.com) |
-| <img src="https://github.com/priyanshdewan.png?size=96" width="64" height="64" style="border-radius:50%;" alt="Priyansh Dewan"/><br/>**Priyansh Dewan** | **Core Contributor & Full-Stack Engineer**<br/>• System architecture & clean repository modularization<br/>• CI/CD pipeline automation & GitHub Actions integration<br/>• Security hardening, OWASP compliance & API contracts<br/>• Telemetry, error logging & performance profiling | [![GitHub](https://img.shields.io/badge/GitHub-priyanshdewan-181717?style=flat-square&logo=github)](https://github.com/priyanshdewan)<br/>[![Email](https://img.shields.io/badge/Email-priyanshdewan%40example.com-555555?style=flat-square&logo=mail.ru&logoColor=white)](mailto:priyanshdewan@example.com) |
-
-</div>
 
 ---
 
@@ -225,4 +226,4 @@ fieldproject/
 ## 📄 License & Intellectual Property
 
 This project is licensed under the [MIT License](LICENSE).  
-Copyright © 2026 **Bizora AI / Om Khade & Priyansh Dewan**. All rights reserved.
+Copyright © 2026 **Bizora AI / Om Khade, Vaishnav Musmade & Priyansh Dewan**. All rights reserved.
