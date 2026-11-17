@@ -91,7 +91,10 @@ type NavSection = { section: string; items: NavItem[] };
 const NAV: NavSection[] = [
   {
     section: "Overview",
-    items: [{ to: "/command-center", label: "Command Center", icon: LayoutDashboard }],
+    items: [
+      { to: "/command-center", label: "Command Center", icon: LayoutDashboard },
+      { to: "/ai-decisions", label: "AI Decision Center", icon: Brain },
+    ],
   },
   {
     section: "Commerce",
@@ -105,7 +108,7 @@ const NAV: NavSection[] = [
     section: "Operations",
     items: [
       { to: "/products", label: "Products", icon: Package },
-      { to: "/inventory", label: "Inventory", icon: Warehouse },
+      { to: "/inventory", label: "Warehouse Inventory", icon: Warehouse },
       { to: "/suppliers", label: "Suppliers", icon: Truck },
     ],
   },
@@ -135,7 +138,6 @@ const ADVANCED_NAV: NavSection[] = [
       { to: "/live-ops", label: "Live Operations", icon: Activity },
       { to: "/time-machine", label: "Business Time Machine", icon: CalendarDays },
       { to: "/analytics", label: "Analytics", icon: BarChart3 },
-      { to: "/ai-decisions", label: "AI Decision Center", icon: Brain },
       { to: "/market-intelligence", label: "Market Intelligence", icon: Globe },
       { to: "/forecasting", label: "Forecasting", icon: LineChart },
       { to: "/anomalies", label: "Anomaly & Risk", icon: ShieldAlert },
